@@ -19,17 +19,27 @@ export class AppComponent implements OnInit{
   }
 
   openDoor(){
-    this.active = false;
-    this.http.get('http://192.168.1.250/leds.cgi?led=0').subscribe(res => {
-      console.log("OPEN");
+    fetch('http://192.168.1.250/leds.cgi?led=0', {
+      body: null,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+      mode: 'no-cors'
+    }).then(res => {
+      console.log("OPEN...");
       setTimeout(()=>{                           // <<<---using ()=> syntax
-        this.http.get('http://192.168.1.250/leds.cgi?led=0').subscribe(res => {
-        console.log("CLOSE");
-        this.active = true;
-        })
-    }, 3000);
-
-
+        fetch('http://192.168.1.250/leds.cgi?led=0', {
+          body: null,
+          headers: {
+          'Content-Type': 'application/json',
+          },
+          method: 'POST',
+          mode: 'no-cors'
+        }).then(res => {
+          console.log("CLOSE...");
+        });
+      }, 3000);
     })
   }
 }
